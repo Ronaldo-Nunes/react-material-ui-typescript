@@ -10,4 +10,4 @@ export function App() {
       </BrowserRouter>
     </AppThemeProvider>
   );
-}
+};
