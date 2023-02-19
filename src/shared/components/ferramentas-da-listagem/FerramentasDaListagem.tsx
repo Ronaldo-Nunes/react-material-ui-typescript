@@ -2,7 +2,7 @@ import { Search } from '@mui/icons-material';
 import { Box, Button, Icon, InputAdornment, Paper, TextField, useTheme } from '@mui/material';
 import React from 'react';
 
-interface IBarraDeFerramentasProps {
+interface IFerramentasDaListagemProps {
   textoDaBusca?: string;
   mostrarInputBusca?: boolean;
   aoMudarTextoBusca?: (novoTexto: string) => void;
@@ -10,7 +10,7 @@ interface IBarraDeFerramentasProps {
   mostrarBotaoNovo?: boolean;
   aoClicarBotaoNovo?: () => void;
 }
-export const BarraDeFerramentas: React.FC<IBarraDeFerramentasProps> = ({
+export const FerramentasDaListagem: React.FC<IFerramentasDaListagemProps> = ({
   textoDaBusca = '',
   mostrarInputBusca = false,
   aoMudarTextoBusca,
