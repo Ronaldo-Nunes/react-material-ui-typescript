@@ -1,8 +1,35 @@
 import { Avatar, Divider, Drawer, Icon, List, ListItemButton, ListItemIcon, ListItemText, useMediaQuery, useTheme } from '@mui/material';
 import { Box } from '@mui/system';
 import { ReactNode } from 'react';
+import { useMatch, useNavigate, useResolvedPath } from 'react-router-dom';
 import { useDrawerContext } from '../../contexts';
 
+interface IListItemLinkProps {
+  label: string;
+  icon: string;
+  navigateTo: string;
+  onClick: (() => void) | undefined;
+}
+const ListItemLink: React.FC<IListItemLinkProps> = ({ navigateTo, icon, label, onClick }) => {
+  const navigate = useNavigate();
+
+  const resolvedPath = useResolvedPath(navigateTo);
+  const match = useMatch({ path: resolvedPath.pathname, end: false }); // Saberá se esta opçõ de menu corresponde à url atual
+
+  const handleClick = () => {
+    navigate(navigateTo);
+    onClick?.(); // Também é possível utilizar null safety com funções
+  };
+
+  return (
+    <ListItemButton selected={!!match} onClick={handleClick}>
+      <ListItemIcon>
+        <Icon>{icon}</Icon>
+      </ListItemIcon>
+      <ListItemText primary={label} />
+    </ListItemButton>
+  );
+};
 
 interface IDrawerProviderProps {
   children: ReactNode;
@@ -11,7 +38,7 @@ export const MenuLateral: React.FC<IDrawerProviderProps> = ({ children }) => {
   const theme = useTheme(); // Consegue acessar todas as propriedades do tema base
   const smDown = useMediaQuery(theme.breakpoints.down('sm')); // Retornará serdadeiro se a largura de tela for inferior a 'sm' (600px)
 
-  const { isDrawerOpen, toggleDrawerOpen } = useDrawerContext();
+  const { isDrawerOpen, toggleDrawerOpen, drawerOptions } = useDrawerContext();
 
   // BREAKPOINTS -> Tamanhos de telas definidos no Material UI [https://mui.com/material-ui/customization/breakpoints/#default-breakpoints]
   return (
@@ -26,12 +53,15 @@ export const MenuLateral: React.FC<IDrawerProviderProps> = ({ children }) => {
           <Divider />
           <Box flex={1}>
             <List component="nav" >
-              <ListItemButton>
-                <ListItemIcon>
-                  <Icon>home</Icon>
-                </ListItemIcon>
-                <ListItemText primary="Página inicial" />
-              </ListItemButton>
+              {
+                drawerOptions.map(drawerOption => (
+                  <ListItemLink key={drawerOption.path}
+                    icon={drawerOption.icon}
+                    label={drawerOption.label}
+                    navigateTo={drawerOption.path} 
+                    onClick={smDown ? toggleDrawerOpen : undefined} />
+                ))
+              }
             </List>
           </Box>
         </Box>
