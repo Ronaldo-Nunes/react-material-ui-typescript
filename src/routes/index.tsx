@@ -1,11 +1,13 @@
-import { Button } from '@mui/material';
 import { useEffect } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
+import { Dashboard } from '../pages';
 import { useDrawerContext } from '../shared/contexts';
 
 export function AppRoutes() {
-  const { toggleDrawerOpen, setDrawerOptions } = useDrawerContext();
+  const { setDrawerOptions } = useDrawerContext();
 
+  // Será chamado apenas uma vez (durante a construção do componente)
+  // O array (segundo parâmetro) indica quais as propriedades que a função "ouviria" as mudanças para ser recarregada. Como está vazio, a chamada é única.
   useEffect(() => {
     setDrawerOptions([
       {
@@ -18,7 +20,7 @@ export function AppRoutes() {
 
   return (
     <Routes>
-      <Route path="/pagina-inicial" element={<Button variant="contained" color="primary" onClick={toggleDrawerOpen}>Toggle drawer</Button>} />
+      <Route path="/pagina-inicial" element={<Dashboard />} />
 
       <Route path="*" element={<Navigate to="/pagina-inicial" />} />
     </Routes>
