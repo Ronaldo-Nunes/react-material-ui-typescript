@@ -2,7 +2,7 @@ import { Avatar, Divider, Drawer, Icon, List, ListItemButton, ListItemIcon, List
 import { Box } from '@mui/system';
 import { ReactNode } from 'react';
 import { useMatch, useNavigate, useResolvedPath } from 'react-router-dom';
-import { useDrawerContext } from '../../contexts';
+import { useAppThemeContext, useDrawerContext } from '../../contexts';
 
 interface IListItemLinkProps {
   label: string;
@@ -39,6 +39,7 @@ export const MenuLateral: React.FC<IDrawerProviderProps> = ({ children }) => {
   const smDown = useMediaQuery(theme.breakpoints.down('sm')); // Retornará serdadeiro se a largura de tela for inferior a 'sm' (600px)
 
   const { isDrawerOpen, toggleDrawerOpen, drawerOptions } = useDrawerContext();
+  const { toggleTheme, themeName } = useAppThemeContext();
 
   // BREAKPOINTS -> Tamanhos de telas definidos no Material UI [https://mui.com/material-ui/customization/breakpoints/#default-breakpoints]
   return (
@@ -58,11 +59,20 @@ export const MenuLateral: React.FC<IDrawerProviderProps> = ({ children }) => {
                   <ListItemLink key={drawerOption.path}
                     icon={drawerOption.icon}
                     label={drawerOption.label}
-                    navigateTo={drawerOption.path} 
+                    navigateTo={drawerOption.path}
                     onClick={smDown ? toggleDrawerOpen : undefined} />
                 ))
               }
             </List>
+          </Box>
+
+          <Box>
+            <ListItemButton onClick={toggleTheme}>
+              <ListItemIcon>
+                <Icon>{themeName === 'dark' ? 'light_mode' : 'dark_mode'}</Icon>
+              </ListItemIcon>
+              <ListItemText primary='Alternar tema' />
+            </ListItemButton>
           </Box>
         </Box>
       </Drawer>
