@@ -1,4 +1,4 @@
-import { Box, Button, Divider, Icon, Paper, useTheme } from '@mui/material';
+import { Box, Button, Divider, Icon, Paper, Skeleton, useTheme } from '@mui/material';
 
 interface IFerramentasDeDetalheProps {
   textoBotaoNovo?: string;
@@ -7,6 +7,12 @@ interface IFerramentasDeDetalheProps {
   mostrarBotaoApagar?: boolean;
   mostrarBotaoSalvar?: boolean;
   mostrarBotaoSalvarEVoltar?: boolean;
+
+  mostrarBotaoNovoCarregando?: boolean;
+  mostrarBotaoVoltarCarregando?: boolean;
+  mostrarBotaoApagarCarregando?: boolean;
+  mostrarBotaoSalvarCarregando?: boolean;
+  mostrarBotaoSalvarEVoltarCarregando?: boolean;
 
   aoClicarEmNovo?: () => void;
   aoClicarEmVoltar?: () => void;
@@ -23,6 +29,12 @@ export const FerramentasDeDetalhe: React.FC<IFerramentasDeDetalheProps> = ({
   mostrarBotaoVoltar = true,
   mostrarBotaoSalvarEVoltar = false,
 
+  mostrarBotaoNovoCarregando = false,
+  mostrarBotaoApagarCarregando = false,
+  mostrarBotaoSalvarCarregando = false,
+  mostrarBotaoVoltarCarregando = false,
+  mostrarBotaoSalvarEVoltarCarregando = false,
+
   aoClicarEmNovo,
   aoClicarEmSalvar,
   aoClicarEmApagar,
@@ -34,52 +46,62 @@ export const FerramentasDeDetalhe: React.FC<IFerramentasDeDetalheProps> = ({
   return (
     <Box gap={1} marginX={1} padding={1} paddingX={2} display='flex' alignItems='center' height={theme.spacing(5)} component={Paper}>
 
-      {mostrarBotaoSalvar && (<Button
-        variant='contained'
-        color='primary'
-        disableElevation
-        onClick={aoClicarEmSalvar}
-        startIcon={<Icon>save</Icon>}>
-        Salvar
-      </Button>)}
+      {(mostrarBotaoSalvar && !mostrarBotaoSalvarCarregando) && (
+        <Button
+          variant='contained'
+          color='primary'
+          disableElevation
+          onClick={aoClicarEmSalvar}
+          startIcon={<Icon>save</Icon>}>
+          Salvar
+        </Button>)}
+      {mostrarBotaoSalvarCarregando && (<Skeleton width={108} height={60} />)}
 
-      {mostrarBotaoSalvarEVoltar && (<Button
-        variant='outlined'
-        color='primary'
-        disableElevation
-        onClick={aoClicarEmSalvarEVoltar}
-        startIcon={<Icon>save</Icon>}>
-        Salvar e voltar
-      </Button>)}
+      {(mostrarBotaoSalvarEVoltar && !mostrarBotaoSalvarEVoltarCarregando) && (
+        <Button
+          variant='outlined'
+          color='primary'
+          disableElevation
+          onClick={aoClicarEmSalvarEVoltar}
+          startIcon={<Icon>save</Icon>}>
+          Salvar e voltar
+        </Button>)}
+      {mostrarBotaoSalvarEVoltarCarregando && (<Skeleton width={180} height={60} />)}
 
-      {mostrarBotaoApagar && (<Button
-        variant='outlined'
-        color='primary'
-        disableElevation
-        onClick={aoClicarEmApagar}
-        startIcon={<Icon>delete</Icon>}>
-        Apagar
-      </Button>)}
+      {(mostrarBotaoApagar && !mostrarBotaoApagarCarregando) && (
+        <Button
+          variant='outlined'
+          color='primary'
+          disableElevation
+          onClick={aoClicarEmApagar}
+          startIcon={<Icon>delete</Icon>}>
+          Apagar
+        </Button>)}
+      {mostrarBotaoApagarCarregando && (<Skeleton width={108} height={60} />)}
 
-      {mostrarBotaoNovo && (<Button
-        variant='outlined'
-        color='primary'
-        disableElevation
-        onClick={aoClicarEmNovo}
-        startIcon={<Icon>add</Icon>}>
-        {textoBotaoNovo}
-      </Button>)}
+      {(mostrarBotaoNovo && !mostrarBotaoNovoCarregando) && (
+        <Button
+          variant='outlined'
+          color='primary'
+          disableElevation
+          onClick={aoClicarEmNovo}
+          startIcon={<Icon>add</Icon>}>
+          {textoBotaoNovo}
+        </Button>)}
+      {mostrarBotaoNovoCarregando && (<Skeleton width={108} height={60} />)}
 
       {mostrarBotaoVoltar && (<Divider variant='middle' orientation='vertical' />)}
 
-      {mostrarBotaoVoltar && (<Button
-        variant='outlined'
-        color='primary'
-        disableElevation
-        onClick={aoClicarEmVoltar}
-        startIcon={<Icon>arrow_back</Icon>}>
-        Voltar
-      </Button>)}
+      {(mostrarBotaoVoltar && !mostrarBotaoVoltarCarregando) && (
+        <Button
+          variant='outlined'
+          color='primary'
+          disableElevation
+          onClick={aoClicarEmVoltar}
+          startIcon={<Icon>arrow_back</Icon>}>
+          Voltar
+        </Button>)}
+      {mostrarBotaoVoltarCarregando && (<Skeleton width={108} height={60} />)}
     </Box >
   );
 };
