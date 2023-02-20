@@ -3,6 +3,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { useDrawerContext } from '../shared/contexts';
 import {
   Dashboard,
+  DetalheDePessoas,
   ListagemDePessoas
 } from '../pages';
 
@@ -32,7 +33,8 @@ export function AppRoutes() {
 
       <Route path="/pessoas" element={<ListagemDePessoas />} />
 
-      <Route path='/pessoas/detalhe/:id' element={<p>Editar pessoa</p>} />
+      {/* O termo :id é um paraâmetro, poderá receber qualquer valor */}
+      <Route path='/pessoas/detalhe/:id' element={<DetalheDePessoas />} /> 
 
       <Route path="*" element={<Navigate to="/pagina-inicial" />} />
     </Routes>
