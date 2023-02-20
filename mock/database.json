@@ -1,3 +1,10 @@
 {
-  "pessoas": []
+  "pessoas": [
+    {
+      "id": 1,
+      "email": "teste@gmail.com",
+      "cidadeId": 1,
+      "nomeCompleto": "João Teste da Silva"
+    }
+  ]
 }
