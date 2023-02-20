@@ -38,8 +38,8 @@ export const AlertDialog = ({
       </DialogContent>
 
       <DialogActions>
-        {mostrarBotaoNegativo && <Button onClick={aoClicarBotaoNegativo}>{textoBotaoNegativo}</Button>}
-        <Button onClick={aoClicarBotaoPositivo} autoFocus>{textoBotaoPositivo}</Button>
+        {mostrarBotaoNegativo && <Button size='medium' onClick={aoClicarBotaoNegativo}>{textoBotaoNegativo}</Button>}
+        <Button size='medium' onClick={aoClicarBotaoPositivo} autoFocus>{textoBotaoPositivo}</Button>
       </DialogActions>
     </Dialog>
   );
