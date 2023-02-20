@@ -32,6 +32,8 @@ export function AppRoutes() {
 
       <Route path="/pessoas" element={<ListagemDePessoas />} />
 
+      <Route path='/pessoas/detalhe/:id' element={<p>Editar pessoa</p>} />
+
       <Route path="*" element={<Navigate to="/pagina-inicial" />} />
     </Routes>
   );

@@ -1,24 +1,6 @@
 {
   "pessoas": [
     {
-      "id": 1,
-      "email": "teste@gmail.com",
-      "cidadeId": 1,
-      "nomeCompleto": "João Teste da Silva"
-    },
-    {
-      "id": 2,
-      "email": "teste@gmail.com",
-      "cidadeId": 1,
-      "nomeCompleto": "Fernando da Silva"
-    },
-    {
-      "id": 3,
-      "email": "teste@gmail.com",
-      "cidadeId": 1,
-      "nomeCompleto": "Marcos Teste da Silva"
-    },
-    {
       "id": 4,
       "email": "teste@gmail.com",
       "cidadeId": 1,
@@ -29,12 +11,6 @@
       "email": "teste@gmail.com",
       "cidadeId": 1,
       "nomeCompleto": "Carlos Teste da Silva"
-    },
-    {
-      "id": 6,
-      "email": "teste@gmail.com",
-      "cidadeId": 1,
-      "nomeCompleto": "Joana Teste da Silva"
     },
     {
       "id": 7,
