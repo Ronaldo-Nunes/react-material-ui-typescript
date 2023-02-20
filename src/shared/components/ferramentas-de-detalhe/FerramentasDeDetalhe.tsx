@@ -50,6 +50,7 @@ export const FerramentasDeDetalhe: React.FC<IFerramentasDeDetalheProps> = ({
 
       {(mostrarBotaoSalvar && !mostrarBotaoSalvarCarregando) && (
         <Button
+          size='medium'
           variant='contained'
           color='primary'
           disableElevation
@@ -63,6 +64,7 @@ export const FerramentasDeDetalhe: React.FC<IFerramentasDeDetalheProps> = ({
 
       {(mostrarBotaoSalvarEVoltar && !mostrarBotaoSalvarEVoltarCarregando && !mdDown) && (
         <Button
+          size='medium'
           variant='outlined'
           color='primary'
           disableElevation
@@ -76,6 +78,7 @@ export const FerramentasDeDetalhe: React.FC<IFerramentasDeDetalheProps> = ({
 
       {(mostrarBotaoApagar && !mostrarBotaoApagarCarregando) && (
         <Button
+          size='medium'
           variant='outlined'
           color='primary'
           disableElevation
@@ -89,6 +92,7 @@ export const FerramentasDeDetalhe: React.FC<IFerramentasDeDetalheProps> = ({
 
       {(mostrarBotaoNovo && !mostrarBotaoNovoCarregando && !smDown) && (
         <Button
+          size='medium'
           variant='outlined'
           color='primary'
           disableElevation
@@ -104,6 +108,7 @@ export const FerramentasDeDetalhe: React.FC<IFerramentasDeDetalheProps> = ({
 
       {(mostrarBotaoVoltar && !mostrarBotaoVoltarCarregando) && (
         <Button
+          size='medium'
           variant='outlined'
           color='primary'
           disableElevation
