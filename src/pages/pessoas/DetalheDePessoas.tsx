@@ -1,12 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Grid, LinearProgress, Paper, Typography, Box } from '@mui/material';
-import { FormHandles } from '@unform/core';
 
 import { AlertDialog, AlertSnackbar, FerramentasDeDetalhe } from '../../shared/components';
 import { PessoasService } from '../../shared/services/api/pessoas/PessoasService';
 import { LayoutBaseDePagina } from '../../shared/layouts';
-import { VTextField, VForm } from '../../shared/forms';
+import { VTextField, VForm, useVForm } from '../../shared/forms';
 
 interface IAlertSnackbarProps {
   exibir: boolean;
@@ -22,8 +21,7 @@ export const DetalheDePessoas: React.FC = () => {
   const { id = 'nova' } = useParams<'id'>(); // Parâmetro passado na url
   const navigate = useNavigate();
 
-  // Armazena a referência do objeto/elemento entre as interações
-  const formRef = useRef<FormHandles>(null);
+  const { formRef, save, saveAndClose: saveAndBack, isSaveAndClose } = useVForm();
 
   const [isLoading, setLoading] = useState(false);
   const [titleNome, setTitleNome] = useState('');
@@ -76,7 +74,11 @@ export const DetalheDePessoas: React.FC = () => {
           if (result instanceof Error) {
             setSnackbarAlert({ exibir: true, message: result.message, tipo: 'error' });
           } else {
-            navigate(`/pessoas/detalhe/${result}`);
+            if (isSaveAndClose()) {
+              navigate('/pessoas');
+            } else {
+              navigate(`/pessoas/detalhe/${result}`);
+            }
           }
         });
     } else {
@@ -88,6 +90,9 @@ export const DetalheDePessoas: React.FC = () => {
             setSnackbarAlert({ exibir: true, message: result.message, tipo: 'error' });
           } else {
             // navigate(`/pessoas/detalhe/${result}`);
+            if (isSaveAndClose()) {
+              navigate('/pessoas');
+            }
             setSnackbarAlert({ exibir: true, message: 'Registro atualizado com sucesso!', tipo: 'success' });
           }
         });
@@ -116,15 +121,15 @@ export const DetalheDePessoas: React.FC = () => {
       barraDeFerramentas={
         <FerramentasDeDetalhe
           textoBotaoNovo='Nova'
-          mostrarBotaoSalvarEVoltar
+          mostrarBotaoSalvarEFechar
           mostrarBotaoNovo={id !== 'nova'}
           mostrarBotaoApagar={id !== 'nova'}
 
           aoClicarEmApagar={handleExibirDialog}
           aoClicarEmVoltar={() => navigate('/pessoas')}
-          aoClicarEmSalvar={() => formRef.current?.submitForm()}
+          aoClicarEmSalvar={save}
           aoClicarEmNovo={() => navigate('/pessoas/detalhe/nova')}
-          aoClicarEmSalvarEVoltar={() => formRef.current?.submitForm()}
+          aoClicarEmSalvarEFechar={saveAndBack}
         />
       }
     >

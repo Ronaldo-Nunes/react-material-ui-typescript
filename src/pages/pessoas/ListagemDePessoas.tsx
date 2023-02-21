@@ -10,7 +10,7 @@ import { Enviroment } from '../../shared/environments';
 
 export const ListagemDePessoas: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { debounce } = useDebounce(1000);
+  const { debounce } = useDebounce();
   const navigate = useNavigate();
 
   const [rows, setRows] = useState<IListagemPessoa[]>([]);

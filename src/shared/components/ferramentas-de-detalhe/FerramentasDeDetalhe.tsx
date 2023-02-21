@@ -6,7 +6,7 @@ interface IFerramentasDeDetalheProps {
   mostrarBotaoVoltar?: boolean;
   mostrarBotaoApagar?: boolean;
   mostrarBotaoSalvar?: boolean;
-  mostrarBotaoSalvarEVoltar?: boolean;
+  mostrarBotaoSalvarEFechar?: boolean;
 
   mostrarBotaoNovoCarregando?: boolean;
   mostrarBotaoVoltarCarregando?: boolean;
@@ -18,7 +18,7 @@ interface IFerramentasDeDetalheProps {
   aoClicarEmVoltar?: () => void;
   aoClicarEmApagar?: () => void;
   aoClicarEmSalvar?: () => void;
-  aoClicarEmSalvarEVoltar?: () => void;
+  aoClicarEmSalvarEFechar?: () => void;
 }
 export const FerramentasDeDetalhe: React.FC<IFerramentasDeDetalheProps> = ({
   textoBotaoNovo = 'Novo',
@@ -27,7 +27,7 @@ export const FerramentasDeDetalhe: React.FC<IFerramentasDeDetalheProps> = ({
   mostrarBotaoApagar = true,
   mostrarBotaoSalvar = true,
   mostrarBotaoVoltar = true,
-  mostrarBotaoSalvarEVoltar = false,
+  mostrarBotaoSalvarEFechar: mostrarBotaoSalvarEVoltar = false,
 
   mostrarBotaoNovoCarregando = false,
   mostrarBotaoApagarCarregando = false,
@@ -38,7 +38,7 @@ export const FerramentasDeDetalhe: React.FC<IFerramentasDeDetalheProps> = ({
   aoClicarEmNovo,
   aoClicarEmSalvar,
   aoClicarEmApagar,
-  aoClicarEmSalvarEVoltar,
+  aoClicarEmSalvarEFechar: aoClicarEmSalvarEVoltar,
   aoClicarEmVoltar
 }) => {
   const smDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
@@ -73,7 +73,7 @@ export const FerramentasDeDetalhe: React.FC<IFerramentasDeDetalheProps> = ({
         >
           <Icon fontSize='small'>save</Icon>
           <Typography variant='button' whiteSpace='nowrap' textOverflow='ellipsis' overflow='hidden' sx={{ ml: 1, display: { xs: 'none', md: 'block' } }}>
-            Salvar e voltar
+            Salvar e fechar
           </Typography>
         </Button>)}
       {(mostrarBotaoSalvarEVoltarCarregando && !mdDown) && (<Skeleton width={180} height={60} />)}

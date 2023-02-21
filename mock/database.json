@@ -53,6 +53,12 @@
       "nomeCompleto": "Chico Furico",
       "email": "chipo@gmail.com",
       "cidadeId": "4"
+    },
+    {
+      "nomeCompleto": "Baré Catarro",
+      "email": "peba@gmail.com",
+      "cidadeId": "2",
+      "id": 17
     }
   ]
 }
