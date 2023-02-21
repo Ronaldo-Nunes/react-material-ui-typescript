@@ -1,14 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { LinearProgress } from '@mui/material';
+import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 import { PessoasService } from '../../shared/services/api/pessoas/PessoasService';
-import { AlertDialog, FerramentasDeDetalhe } from '../../shared/components';
+import { AlertDialog, AlertSnackbar, FerramentasDeDetalhe } from '../../shared/components';
 import { LayoutBaseDePagina } from '../../shared/layouts';
 import { VTextField } from '../../shared/forms';
-import { Alert, Button, LinearProgress, Snackbar } from '@mui/material';
-import { FormHandles } from '@unform/core';
 
-interface IAlert {
+interface IAlertSnackbarProps {
   exibir: boolean;
   message?: string;
   tipo?: 'error' | 'warning' | 'info' | 'success'
@@ -28,7 +28,7 @@ export const DetalheDePessoas: React.FC = () => {
   const [isLoading, setLoading] = useState(false);
   const [titleNome, setTitleNome] = useState('');
   const [exibirDialog, setExibirDialog] = useState(false);
-  const [exibirAtlert, setExibirAlert] = useState<IAlert>({
+  const [snackbarAlert, setSnackbarAlert] = useState<IAlertSnackbarProps>({
     exibir: false,
     message: ''
   });
@@ -37,7 +37,7 @@ export const DetalheDePessoas: React.FC = () => {
     if (reason === 'clickaway') {
       return;
     }
-    setExibirAlert({ exibir: false });
+    setSnackbarAlert({ exibir: false });
   };
 
 
@@ -67,7 +67,7 @@ export const DetalheDePessoas: React.FC = () => {
         .then((result) => {
           setLoading(false);
           if (result instanceof Error) {
-            setExibirAlert({ exibir: true, message: result.message, tipo: 'error' });
+            setSnackbarAlert({ exibir: true, message: result.message, tipo: 'error' });
           } else {
             navigate(`/pessoas/detalhe/${result}`);
           }
@@ -78,10 +78,10 @@ export const DetalheDePessoas: React.FC = () => {
         .then((result) => {
           setLoading(false);
           if (result instanceof Error) {
-            setExibirAlert({ exibir: true, message: result.message, tipo: 'error' });
+            setSnackbarAlert({ exibir: true, message: result.message, tipo: 'error' });
           } else {
             // navigate(`/pessoas/detalhe/${result}`);
-            setExibirAlert({ exibir: true, message: 'Registro atualizado com sucesso!', tipo: 'success' });
+            setSnackbarAlert({ exibir: true, message: 'Registro atualizado com sucesso!', tipo: 'success' });
           }
         });
     }
@@ -96,9 +96,9 @@ export const DetalheDePessoas: React.FC = () => {
     PessoasService.deleteById(id)
       .then(result => {
         if (result instanceof Error) {
-          setExibirAlert({ exibir: true, message: result.message, tipo: 'error' });
+          setSnackbarAlert({ exibir: true, message: result.message, tipo: 'error' });
         } else {
-          setExibirAlert({ exibir: true, message: 'Registro excluído com sucesso!', tipo: 'success' });
+          setSnackbarAlert({ exibir: true, message: 'Registro excluído com sucesso!', tipo: 'success' });
           navigate('/pessoas');
         }
       });
@@ -122,9 +122,15 @@ export const DetalheDePessoas: React.FC = () => {
       }
     >
 
-      <Snackbar anchorOrigin={{ vertical: 'top', horizontal: 'center' }} open={exibirAtlert.exibir} autoHideDuration={6000} onClose={handleCloseSnackBar}>
+      <AlertSnackbar
+        exibir={snackbarAlert.exibir}
+        message={snackbarAlert.message}
+        tipo={snackbarAlert.tipo}
+        handleClose={() => handleCloseSnackBar()}
+      />
+      {/* <Snackbar anchorOrigin={{ vertical: 'top', horizontal: 'center' }} open={exibirAtlert.exibir} autoHideDuration={6000} onClose={handleCloseSnackBar}>
         <Alert variant='filled' severity={exibirAtlert.tipo} onClose={handleCloseSnackBar} sx={{ width: '100%' }}>{exibirAtlert.message}</Alert>
-      </Snackbar>
+      </Snackbar> */}
 
       <AlertDialog
         exibirDialog={exibirDialog}
