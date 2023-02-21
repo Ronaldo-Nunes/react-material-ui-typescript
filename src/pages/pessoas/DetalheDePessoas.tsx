@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { LinearProgress } from '@mui/material';
+import { Grid, LinearProgress, Paper, Typography } from '@mui/material';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 import { PessoasService } from '../../shared/services/api/pessoas/PessoasService';
 import { AlertDialog, AlertSnackbar, FerramentasDeDetalhe } from '../../shared/components';
 import { LayoutBaseDePagina } from '../../shared/layouts';
 import { VTextField } from '../../shared/forms';
+import { Box } from '@mui/system';
 
 interface IAlertSnackbarProps {
   exibir: boolean;
@@ -48,6 +49,7 @@ export const DetalheDePessoas: React.FC = () => {
       PessoasService.getById(Number(id))
         .then((result) => {
           setLoading(false);
+          
           if (result instanceof Error) {
             alert(result.message);
             navigate('/pessoas');
@@ -56,6 +58,12 @@ export const DetalheDePessoas: React.FC = () => {
             formRef.current?.setData(result);
           }
         });
+    } else {
+      formRef.current?.setData({
+        email: '',
+        cidadeId: '',
+        nomeCompleto: '',
+      });
     }
   }, [id]);
 
@@ -128,9 +136,6 @@ export const DetalheDePessoas: React.FC = () => {
         tipo={snackbarAlert.tipo}
         handleClose={() => handleCloseSnackBar()}
       />
-      {/* <Snackbar anchorOrigin={{ vertical: 'top', horizontal: 'center' }} open={exibirAtlert.exibir} autoHideDuration={6000} onClose={handleCloseSnackBar}>
-        <Alert variant='filled' severity={exibirAtlert.tipo} onClose={handleCloseSnackBar} sx={{ width: '100%' }}>{exibirAtlert.message}</Alert>
-      </Snackbar> */}
 
       <AlertDialog
         exibirDialog={exibirDialog}
@@ -141,14 +146,60 @@ export const DetalheDePessoas: React.FC = () => {
         aoClicarBotaoPositivo={() => handleDelete(Number(id))}
       />
 
-      {isLoading && (
-        <LinearProgress variant='indeterminate' />
-      )}
-
       <Form ref={formRef} onSubmit={(dados) => handleSave(dados)}>
-        <VTextField size='small' placeholder='Nome completo' name='nomeCompleto' />
-        <VTextField size='small' placeholder='Email' name='email' />
-        <VTextField size='small' placeholder='Cidade id' name='cidadeId' />
+        <Box margin={1} display='flex' flexDirection='column' component={Paper} variant='outlined'>
+          <Grid container direction='column' padding={2} spacing={2}>
+
+            {isLoading && (
+              <Grid item>
+                <LinearProgress variant='indeterminate' />
+              </Grid>
+            )}
+
+            <Grid item>
+              <Typography variant='h6'>Geral</Typography>
+            </Grid>
+
+            <Grid container item direction='row'>
+              <Grid item xs={12} sm={12} lg={4} xl={4}>
+                <VTextField
+                  size='small'
+                  fullWidth
+                  label='Nome completo'
+                  name='nomeCompleto'
+                  disabled={isLoading}
+                />
+              </Grid>
+            </Grid>
+
+            <Grid container item direction='row'>
+              <Grid item xs={12} sm={12} lg={4} xl={4}>
+                <VTextField
+                  size='small'
+                  fullWidth
+                  label='Email'
+                  name='email'
+                  disabled={isLoading}
+                  onChange={event => setTitleNome(event.target.value)}
+                />
+              </Grid>
+            </Grid>
+
+            <Grid container item direction='row'>
+              <Grid item xs={12} sm={12} lg={4} xl={4}>
+                <VTextField
+                  size='small'
+                  fullWidth
+                  label='Cidade'
+                  name='cidadeId'
+                  disabled={isLoading}
+                />
+              </Grid>
+            </Grid>
+
+          </Grid>
+
+        </Box>
 
       </Form>
     </LayoutBaseDePagina>

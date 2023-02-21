@@ -26,11 +26,12 @@ export const VTextField: React.FC<TVTextFieldProps> = ({ name, ...rest }) => {
       error={error !== undefined}
       helperText={error}
       defaultValue={defaultValue}
-      
-      value={value}
-      onChange={event => setValue(event.target.value)}
 
-      onKeyDown={() => error ? clearError() : undefined}
+      value={value}
+      // Passando as duas funções, através do rest (resto das propriedades) é possível acessar o onChange fora do componente
+      onChange={event => { setValue(event.target.value); rest.onChange?.(event); }}
+
+      onKeyDown={(event) => { error && clearError(); rest.onKeyDown?.(event); }}
     />
   );
 };
