@@ -73,7 +73,6 @@ const updateById = async (id: number, dados: IDetalhePessoa): Promise<void | Err
   try {
     const urlRelativa = `/pessoas/${id}`;
     await Api.put(urlRelativa, dados);
-    return new Error('Erro ao tentar atualizar o registro.');
   } catch (error) {
     console.error(error);
     return new Error((error as { message: string }).message || 'Erro ao tentar atualizar o registro.');

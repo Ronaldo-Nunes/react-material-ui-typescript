@@ -1,20 +1,29 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Form } from '@unform/web';
 import { PessoasService } from '../../shared/services/api/pessoas/PessoasService';
 import { AlertDialog, FerramentasDeDetalhe } from '../../shared/components';
 import { LayoutBaseDePagina } from '../../shared/layouts';
 import { VTextField } from '../../shared/forms';
-import { Alert, Snackbar } from '@mui/material';
+import { Alert, Button, LinearProgress, Snackbar } from '@mui/material';
+import { FormHandles } from '@unform/core';
 
 interface IAlert {
   exibir: boolean;
   message?: string;
   tipo?: 'error' | 'warning' | 'info' | 'success'
 }
+interface IFormData {
+  email: string;
+  nomeCompleto: string;
+  cidadeId: number;
+}
 export const DetalheDePessoas: React.FC = () => {
   const { id = 'nova' } = useParams<'id'>(); // Parâmetro passado na url
   const navigate = useNavigate();
+
+  // Armazena a referência do objeto/elemento entre as interações
+  const formRef = useRef<FormHandles>(null);
 
   const [isLoading, setLoading] = useState(false);
   const [titleNome, setTitleNome] = useState('');
@@ -44,14 +53,38 @@ export const DetalheDePessoas: React.FC = () => {
             navigate('/pessoas');
           } else {
             setTitleNome(result.nomeCompleto);
-            console.log(result);
+            formRef.current?.setData(result);
           }
         });
     }
   }, [id]);
 
-  const handleSave = () => {
-    console.log('save');
+  const handleSave = (dados: IFormData) => {
+    setLoading(true);
+    if (id === 'nova') {
+      PessoasService
+        .create(dados)
+        .then((result) => {
+          setLoading(false);
+          if (result instanceof Error) {
+            setExibirAlert({ exibir: true, message: result.message, tipo: 'error' });
+          } else {
+            navigate(`/pessoas/detalhe/${result}`);
+          }
+        });
+    } else {
+      PessoasService
+        .updateById(Number(id), { id: Number(id), ...dados })
+        .then((result) => {
+          setLoading(false);
+          if (result instanceof Error) {
+            setExibirAlert({ exibir: true, message: result.message, tipo: 'error' });
+          } else {
+            // navigate(`/pessoas/detalhe/${result}`);
+            setExibirAlert({ exibir: true, message: 'Registro atualizado com sucesso!', tipo: 'success' });
+          }
+        });
+    }
   };
 
   const handleExibirDialog = () => {
@@ -80,11 +113,11 @@ export const DetalheDePessoas: React.FC = () => {
           mostrarBotaoNovo={id !== 'nova'}
           mostrarBotaoApagar={id !== 'nova'}
 
-          aoClicarEmSalvar={handleSave}
-          aoClicarEmSalvarEVoltar={handleSave}
           aoClicarEmApagar={handleExibirDialog}
           aoClicarEmVoltar={() => navigate('/pessoas')}
+          aoClicarEmSalvar={() => formRef.current?.submitForm()}
           aoClicarEmNovo={() => navigate('/pessoas/detalhe/nova')}
+          aoClicarEmSalvarEVoltar={() => formRef.current?.submitForm()}
         />
       }
     >
@@ -102,12 +135,15 @@ export const DetalheDePessoas: React.FC = () => {
         aoClicarBotaoPositivo={() => handleDelete(Number(id))}
       />
 
-      {/* {isLoading && (
+      {isLoading && (
         <LinearProgress variant='indeterminate' />
-      )} */}
+      )}
 
-      <Form onSubmit={() => console.log('form')}>
-        <VTextField name='nomeCompleto'/>
+      <Form ref={formRef} onSubmit={(dados) => handleSave(dados)}>
+        <VTextField size='small' placeholder='Nome completo' name='nomeCompleto' />
+        <VTextField size='small' placeholder='Email' name='email' />
+        <VTextField size='small' placeholder='Cidade id' name='cidadeId' />
+
       </Form>
     </LayoutBaseDePagina>
   );

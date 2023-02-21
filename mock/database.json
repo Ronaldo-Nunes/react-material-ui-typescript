@@ -47,6 +47,12 @@
       "email": "teste@gmail.com",
       "cidadeId": 1,
       "nomeCompleto": "Aline da Silva"
+    },
+    {
+      "id": 16,
+      "nomeCompleto": "Chico Furico",
+      "email": "chipo@gmail.com",
+      "cidadeId": "3"
     }
   ]
 }
