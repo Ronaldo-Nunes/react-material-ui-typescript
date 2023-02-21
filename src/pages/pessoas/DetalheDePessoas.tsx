@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Grid, LinearProgress, Paper, Typography, Box } from '@mui/material';
+import * as yup from 'yup';
 
 import { AlertDialog, AlertSnackbar, FerramentasDeDetalhe } from '../../shared/components';
 import { PessoasService } from '../../shared/services/api/pessoas/PessoasService';
 import { LayoutBaseDePagina } from '../../shared/layouts';
-import { VTextField, VForm, useVForm } from '../../shared/forms';
+import { VTextField, VForm, useVForm, IVFormErros } from '../../shared/forms';
 
 interface IAlertSnackbarProps {
   exibir: boolean;
@@ -17,6 +18,13 @@ interface IFormData {
   nomeCompleto: string;
   cidadeId: number;
 }
+
+const formValidationSchema: yup.Schema<IFormData> = yup.object().shape({
+  nomeCompleto: yup.string().required().min(3),
+  email: yup.string().required().email(),
+  cidadeId: yup.number().required()
+});
+
 export const DetalheDePessoas: React.FC = () => {
   const { id = 'nova' } = useParams<'id'>(); // Parâmetro passado na url
   const navigate = useNavigate();
@@ -65,38 +73,60 @@ export const DetalheDePessoas: React.FC = () => {
   }, [id]);
 
   const handleSave = (dados: IFormData) => {
-    setLoading(true);
-    if (id === 'nova') {
-      PessoasService
-        .create(dados)
-        .then((result) => {
-          setLoading(false);
-          if (result instanceof Error) {
-            setSnackbarAlert({ exibir: true, message: result.message, tipo: 'error' });
-          } else {
-            if (isSaveAndClose()) {
-              navigate('/pessoas');
-            } else {
-              navigate(`/pessoas/detalhe/${result}`);
-            }
-          }
+
+    // if (dados.nomeCompleto.length < 3) {
+    //   // seta o erro através da referência do formulário diretamente no campo informado
+    //   formRef.current?.setFieldError('nomeCompleto', 'Entrada inválida');
+    //   return;
+    // }
+
+    formValidationSchema
+      .validate(dados, { abortEarly: false })
+      .then((dadosValidados) => {
+
+        setLoading(true);
+        if (id === 'nova') {
+          PessoasService
+            .create(dadosValidados)
+            .then((result) => {
+              setLoading(false);
+              if (result instanceof Error) {
+                setSnackbarAlert({ exibir: true, message: result.message, tipo: 'error' });
+              } else {
+                if (isSaveAndClose()) {
+                  navigate('/pessoas');
+                } else {
+                  navigate(`/pessoas/detalhe/${result}`);
+                }
+              }
+            });
+        } else {
+          PessoasService
+            .updateById(Number(id), { id: Number(id), ...dadosValidados })
+            .then((result) => {
+              setLoading(false);
+              if (result instanceof Error) {
+                setSnackbarAlert({ exibir: true, message: result.message, tipo: 'error' });
+              } else {
+                // navigate(`/pessoas/detalhe/${result}`);
+                if (isSaveAndClose()) {
+                  navigate('/pessoas');
+                }
+                setSnackbarAlert({ exibir: true, message: 'Registro atualizado com sucesso!', tipo: 'success' });
+              }
+            });
+        }
+      })
+      .catch((errors: yup.ValidationError) => {
+        const validationErrors: IVFormErros = {};
+
+        errors.inner.forEach(error => {
+          if (error.path === undefined) return;
+
+          validationErrors[error.path] = error.message;
+          formRef.current?.setErrors(validationErrors);
         });
-    } else {
-      PessoasService
-        .updateById(Number(id), { id: Number(id), ...dados })
-        .then((result) => {
-          setLoading(false);
-          if (result instanceof Error) {
-            setSnackbarAlert({ exibir: true, message: result.message, tipo: 'error' });
-          } else {
-            // navigate(`/pessoas/detalhe/${result}`);
-            if (isSaveAndClose()) {
-              navigate('/pessoas');
-            }
-            setSnackbarAlert({ exibir: true, message: 'Registro atualizado com sucesso!', tipo: 'success' });
-          }
-        });
-    }
+      });
   };
 
   const handleExibirDialog = () => {
