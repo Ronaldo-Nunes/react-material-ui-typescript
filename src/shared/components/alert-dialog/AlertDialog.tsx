@@ -1,4 +1,4 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Typography } from '@mui/material';
 
 interface IAlertDialogProps {
   exibirDialog: boolean;
@@ -12,7 +12,7 @@ interface IAlertDialogProps {
   aoClicarBotaoPositivo?: () => void;
   aoClicarBotaoNegativo?: () => void;
 }
-export const AlertDialog = ({
+export const AlertDialog: React.FC<IAlertDialogProps> = ({
   exibirDialog,
   titulo,
   mensagem,
@@ -21,7 +21,7 @@ export const AlertDialog = ({
   mostrarBotaoNegativo = true,
   aoClicarBotaoPositivo,
   aoClicarBotaoNegativo
-}: IAlertDialogProps) => {
+}) => {
 
   return (
     <Dialog
@@ -38,8 +38,13 @@ export const AlertDialog = ({
       </DialogContent>
 
       <DialogActions>
-        {mostrarBotaoNegativo && <Button size='medium' onClick={aoClicarBotaoNegativo}>{textoBotaoNegativo}</Button>}
-        <Button size='medium' onClick={aoClicarBotaoPositivo} autoFocus>{textoBotaoPositivo}</Button>
+        {mostrarBotaoNegativo && (<Button size='small' onClick={aoClicarBotaoNegativo}>
+          <Typography variant='button'>{textoBotaoNegativo}</Typography>
+        </Button>
+        )}
+        <Button size='small' onClick={aoClicarBotaoPositivo} autoFocus>
+          <Typography variant='button'>{textoBotaoPositivo}</Typography>
+        </Button>
       </DialogActions>
     </Dialog>
   );
