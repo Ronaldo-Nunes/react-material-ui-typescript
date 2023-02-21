@@ -1,13 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Grid, LinearProgress, Paper, Typography } from '@mui/material';
+import { Grid, LinearProgress, Paper, Typography, Box } from '@mui/material';
 import { FormHandles } from '@unform/core';
-import { Form } from '@unform/web';
-import { PessoasService } from '../../shared/services/api/pessoas/PessoasService';
+
 import { AlertDialog, AlertSnackbar, FerramentasDeDetalhe } from '../../shared/components';
+import { PessoasService } from '../../shared/services/api/pessoas/PessoasService';
 import { LayoutBaseDePagina } from '../../shared/layouts';
-import { VTextField } from '../../shared/forms';
-import { Box } from '@mui/system';
+import { VTextField, VForm } from '../../shared/forms';
 
 interface IAlertSnackbarProps {
   exibir: boolean;
@@ -49,7 +48,7 @@ export const DetalheDePessoas: React.FC = () => {
       PessoasService.getById(Number(id))
         .then((result) => {
           setLoading(false);
-          
+
           if (result instanceof Error) {
             alert(result.message);
             navigate('/pessoas');
@@ -146,7 +145,7 @@ export const DetalheDePessoas: React.FC = () => {
         aoClicarBotaoPositivo={() => handleDelete(Number(id))}
       />
 
-      <Form ref={formRef} onSubmit={(dados) => handleSave(dados)}>
+      <VForm ref={formRef} onSubmit={(dados) => handleSave(dados)}>
         <Box margin={1} display='flex' flexDirection='column' component={Paper} variant='outlined'>
           <Grid container direction='column' padding={2} spacing={2}>
 
@@ -201,7 +200,7 @@ export const DetalheDePessoas: React.FC = () => {
 
         </Box>
 
-      </Form>
+      </VForm>
     </LayoutBaseDePagina>
   );
 };
