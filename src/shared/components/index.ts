@@ -1,3 +1,4 @@
+export * from './login/Login';
 export * from './menu-lateral/MenuLateral';
 export * from './alert-dialog/AlertDialog';
 export * from './alert-snackbar/AlertSnackbar';

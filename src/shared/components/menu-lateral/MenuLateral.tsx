@@ -2,7 +2,7 @@ import { Avatar, Divider, Drawer, Icon, List, ListItemButton, ListItemIcon, List
 import { Box } from '@mui/material';
 import { ReactNode } from 'react';
 import { useMatch, useNavigate, useResolvedPath } from 'react-router-dom';
-import { useAppThemeContext, useDrawerContext } from '../../contexts';
+import { useAppThemeContext, useAuthContext, useDrawerContext } from '../../contexts';
 
 interface IListItemLinkProps {
   label: string;
@@ -40,6 +40,7 @@ export const MenuLateral: React.FC<IDrawerProviderProps> = ({ children }) => {
 
   const { isDrawerOpen, toggleDrawerOpen, drawerOptions } = useDrawerContext();
   const { toggleTheme, themeName } = useAppThemeContext();
+  const { logout } = useAuthContext();
 
   // BREAKPOINTS -> Tamanhos de telas definidos no Material UI [https://mui.com/material-ui/customization/breakpoints/#default-breakpoints]
   return (
@@ -72,6 +73,12 @@ export const MenuLateral: React.FC<IDrawerProviderProps> = ({ children }) => {
                 <Icon>{themeName === 'dark' ? 'light_mode' : 'dark_mode'}</Icon>
               </ListItemIcon>
               <ListItemText primary='Alternar tema' />
+            </ListItemButton>
+            <ListItemButton onClick={logout}>
+              <ListItemIcon>
+                <Icon>logout</Icon>
+              </ListItemIcon>
+              <ListItemText primary='Sair' />
             </ListItemButton>
           </Box>
         </Box>
