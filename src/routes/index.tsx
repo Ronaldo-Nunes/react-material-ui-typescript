@@ -3,6 +3,8 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { useDrawerContext } from '../shared/contexts';
 import {
   Dashboard,
+  DetalheDeCidades,
+  ListagemDeCidades,
   DetalheDePessoas,
   ListagemDePessoas
 } from '../pages';
@@ -23,6 +25,11 @@ export function AppRoutes() {
         icon: 'people', // Ícone do material UI
         label: 'Pessoas',
         path: '/pessoas'
+      },
+      {
+        icon: 'location_city', // Ícone do material UI
+        label: 'Cidades',
+        path: '/cidades'
       }
     ]);
   }, []);
@@ -32,9 +39,11 @@ export function AppRoutes() {
       <Route path="/pagina-inicial" element={<Dashboard />} />
 
       <Route path="/pessoas" element={<ListagemDePessoas />} />
-
-      {/* O termo :id é um paraâmetro, poderá receber qualquer valor */}
       <Route path='/pessoas/detalhe/:id' element={<DetalheDePessoas />} /> 
+      {/* O termo :id é um paraâmetro, poderá receber qualquer valor */}
+
+      <Route path="/cidades" element={<ListagemDeCidades />} />
+      <Route path='/cidades/detalhe/:id' element={<DetalheDeCidades />} /> 
 
       <Route path="*" element={<Navigate to="/pagina-inicial" />} />
     </Routes>

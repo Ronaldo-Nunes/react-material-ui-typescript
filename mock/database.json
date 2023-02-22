@@ -59,6 +59,56 @@
       "email": "peba@gmail.com",
       "cidadeId": "2",
       "id": 17
+    },
+    {
+      "nomeCompleto": "Marcos Maia",
+      "email": "teste@teste.com",
+      "cidadeId": 5,
+      "id": 18
+    },
+    {
+      "id": 19,
+      "nomeCompleto": "Matias Nunes Alves",
+      "email": "matias@gmail.com",
+      "cidadeId": 2
+    }
+  ],
+  "cidades": [
+    {
+      "nome": "Arapiraca",
+      "id": 1
+    },
+    {
+      "nome": "Feira Grande",
+      "id": 2
+    },
+    {
+      "nome": "Maceió",
+      "id": 3
+    },
+    {
+      "nome": "Paulo Afonso",
+      "id": 4
+    },
+    {
+      "id": 5,
+      "nome": "Caruaru"
+    },
+    {
+      "nome": "Jaramataia",
+      "id": 6
+    },
+    {
+      "nome": "Porto de Pedras",
+      "id": 7
+    },
+    {
+      "nome": "Craíbas",
+      "id": 8
+    },
+    {
+      "nome": "Delmiro Gouveia",
+      "id": 9
     }
   ]
 }
